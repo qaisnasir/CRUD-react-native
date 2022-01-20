@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import {
   View,
   Text,
@@ -31,27 +31,56 @@ const Crud = () => {
       age: 22
     }
   ];
+
+  const [user, setUser] = useState({
+    name: "",
+    age: ""
+  });
+  const [users, setUsers] = useState([]);
+
+  const addUser = useCallback(
+    () => {
+      setUsers([...users, user]);
+      setUser({
+        name: "",
+        age: ""
+      });
+    },
+    [user, users]
+  );
+
   return (
     <View style={style.container}>
       <Text style={style.header}>Crud</Text>
-      <TextInput style={style.inputS} placeholder="name" />
+      <TextInput
+        style={style.inputS}
+        placeholder="name"
+        value={user.name}
+        onChangeText={text => setUser({ ...user, name: text })}
+      />
       <TextInput
         style={style.inputS}
         placeholder="age"
         keyboardType="number-pad"
+        value={user.age}
+        onChangeText={text => setUser({ ...user, age: text })}
       />
       <View
         style={{
           flexDirection: "row"
         }}
       >
-        <TouchableOpacity style={style.button}>
+        <TouchableOpacity
+          style={style.button}
+          onPress={addUser}
+          disabled={!(user.name && user.age)}
+        >
           <Text style={style.buttonTxt}>Add</Text>
         </TouchableOpacity>
       </View>
 
       <ScrollView style={style.list}>
-        {data.map(item =>
+        {users.map(item =>
           <View style={style.listBox} key={item.id}>
             <Text>
               Name : {item.name}
