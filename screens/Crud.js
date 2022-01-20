@@ -9,6 +9,28 @@ import {
 } from "react-native";
 
 const Crud = () => {
+  const data = [
+    {
+      id: 1,
+      name: "shahaib",
+      age: 22
+    },
+    {
+      id: 2,
+      name: "shahaib",
+      age: 22
+    },
+    {
+      id: 3,
+      name: "shahaib",
+      age: 22
+    },
+    {
+      id: 4,
+      name: "shahaib",
+      age: 22
+    }
+  ];
   return (
     <View style={style.container}>
       <Text style={style.header}>Crud</Text>
@@ -29,10 +51,16 @@ const Crud = () => {
       </View>
 
       <ScrollView style={style.list}>
-        <View style={style.listBox}>
-          <Text>Name : </Text>
-          <Text>Age : </Text>
-        </View>
+        {data.map(item =>
+          <View style={style.listBox} key={item.id}>
+            <Text>
+              Name : {item.name}
+            </Text>
+            <Text>
+              Age : {item.age}
+            </Text>
+          </View>
+        )}
       </ScrollView>
     </View>
   );
