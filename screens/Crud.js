@@ -9,34 +9,13 @@ import {
 } from "react-native";
 
 const Crud = () => {
-  const data = [
-    {
-      id: 1,
-      name: "shahaib",
-      age: 22
-    },
-    {
-      id: 2,
-      name: "shahaib",
-      age: 22
-    },
-    {
-      id: 3,
-      name: "shahaib",
-      age: 22
-    },
-    {
-      id: 4,
-      name: "shahaib",
-      age: 22
-    }
-  ];
-
   const [user, setUser] = useState({
     name: "",
     age: ""
   });
   const [users, setUsers] = useState([]);
+  const [isEdit, setIsEdit] = useState(false);
+  const [index, setIndex] = useState(null);
 
   const addUser = useCallback(
     () => {
@@ -47,6 +26,25 @@ const Crud = () => {
       });
     },
     [user, users]
+  );
+  const handleEditUser = useCallback(
+    indx => {
+      // console.log(users[indx]);
+
+      setUser(users[indx]);
+      setIsEdit(true);
+      setIndex(indx);
+    },
+    [user, users, index, isEdit]
+  );
+  const updateUser = useCallback(
+    () => {
+      // console.log("lets edit");
+      let edit = users;
+      edit[index] = user;
+      setUsers([...edit]);
+    },
+    [users, user, setUsers]
   );
 
   return (
@@ -72,23 +70,29 @@ const Crud = () => {
       >
         <TouchableOpacity
           style={style.button}
-          onPress={addUser}
+          onPress={() => (isEdit ? updateUser() : addUser())}
           disabled={!(user.name && user.age)}
         >
-          <Text style={style.buttonTxt}>Add</Text>
+          <Text style={style.buttonTxt}>
+            {isEdit ? "Update" : "Add"}
+          </Text>
         </TouchableOpacity>
       </View>
 
       <ScrollView style={style.list}>
-        {users.map(item =>
-          <View style={style.listBox} key={item.id}>
+        {users.map((item, index) =>
+          <TouchableOpacity
+            style={style.listBox}
+            key={index}
+            onPress={() => handleEditUser(index)}
+          >
             <Text>
               Name : {item.name}
             </Text>
             <Text>
               Age : {item.age}
             </Text>
-          </View>
+          </TouchableOpacity>
         )}
       </ScrollView>
     </View>
