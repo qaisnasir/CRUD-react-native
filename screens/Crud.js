@@ -27,6 +27,7 @@ const Crud = () => {
           <Text style={style.buttonTxt}>Add</Text>
         </TouchableOpacity>
       </View>
+
       <ScrollView style={style.list}>
         <View style={style.listBox}>
           <Text>Name : </Text>
@@ -73,7 +74,7 @@ const style = StyleSheet.create({
     fontWeight: "bold"
   },
   listBox: {
-    width: "80%",
+    width: "70%",
     padding: 20,
     margin: 10,
     backgroundColor: "grey"
