@@ -41,13 +41,22 @@ const Crud = () => {
       let edit = users;
       edit[index] = user;
       setUsers([...edit]);
+      setIsEdit(false)
+      setUser({
+        name: "",
+        age: ""
+      });
     },
     [users, user, setUsers]
   );
-  const deleteUser = useCallback(()=>{
-    let filterObj = users.filter(users=>users.name != item.name);
+  const deleteUser = useCallback((indx)=>{
+    let filterObj = users.filter((item,ind)=>ind != indx);
     console.log(filterObj);
     setUsers(filterObj)
+    setUser({
+      name: "",
+      age: ""
+    });
   }, 
     [user, users, setUsers]
   )
