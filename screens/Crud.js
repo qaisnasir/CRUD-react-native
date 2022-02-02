@@ -16,6 +16,7 @@ const Crud = () => {
   const [users, setUsers] = useState([]);
   const [isEdit, setIsEdit] = useState(false);
   const [index, setIndex] = useState(null);
+  const [item, setItem] = useState();
 
   const addUser = useCallback(
     () => {
@@ -29,8 +30,6 @@ const Crud = () => {
   );
   const handleEditUser = useCallback(
     indx => {
-      // console.log(users[indx]);
-
       setUser(users[indx]);
       setIsEdit(true);
       setIndex(indx);
@@ -39,13 +38,19 @@ const Crud = () => {
   );
   const updateUser = useCallback(
     () => {
-      // console.log("lets edit");
       let edit = users;
       edit[index] = user;
       setUsers([...edit]);
     },
     [users, user, setUsers]
   );
+  const deleteUser = useCallback(()=>{
+    let filterObj = users.filter(users=>users.name != item.name);
+    console.log(filterObj);
+    setUsers(filterObj)
+  }, 
+    [user, users, setUsers]
+  )
 
   return (
     <View style={style.container}>
@@ -77,6 +82,13 @@ const Crud = () => {
             {isEdit ? "Update" : "Add"}
           </Text>
         </TouchableOpacity>
+        
+        <TouchableOpacity 
+        onPress={()=>deleteUser(index)}
+        style={style.button}
+        key={index}>
+          <Text style={style.buttonTxt}>Delete</Text>
+        </TouchableOpacity>
       </View>
 
       <ScrollView style={style.list}>
@@ -84,7 +96,7 @@ const Crud = () => {
           <TouchableOpacity
             style={style.listBox}
             key={index}
-            onPress={() => handleEditUser(index)}
+            onPress={() =>{ handleEditUser(index),setItem(item)}}
           >
             <Text>
               Name : {item.name}
@@ -102,7 +114,6 @@ const Crud = () => {
 const style = StyleSheet.create({
   inputS: {
     width: "80%",
-    // height: 30,
     padding: 10,
     backgroundColor: "grey",
     fontSize: 24,
@@ -120,9 +131,7 @@ const style = StyleSheet.create({
     justifyContent: "center"
   },
   button: {
-    // flex: 0.6,
     width: "30%",
-    // height:30,
     padding: 10,
     borderRadius: 20,
     backgroundColor: "black",
